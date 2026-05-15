@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "build": "node build-casefix.mjs"
+    "build": "node build-labfix.mjs"
   }
 }
