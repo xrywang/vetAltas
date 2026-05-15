@@ -7,19 +7,21 @@ const files = await readdir(assetDir);
 const jsFile = files.find((file) => file.endsWith('.js'));
 if (!jsFile) throw new Error('No built JS asset found');
 
-const logoFile = 'vetaltas-logo-v2.svg';
+const logoFile = 'vetaltas-logo-v3.svg';
 const logoPath = `/assets/${logoFile}`;
 const logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
   <title id="title">vetAltas logo</title>
-  <desc id="desc">Dog and cat silhouettes inside a medical stethoscope circle with a cross.</desc>
-  <path d="M401 131a183 183 0 1 0 2 247" fill="none" stroke="#0f4d63" stroke-width="18" stroke-linecap="round"/>
-  <path d="M111 331c10-53 36-95 78-128 25-20 38-43 59-69 7-9 19-4 17 9-3 22-2 39 5 52 10 18 35 29 55 44 28 21 38 53 22 72-13 16-43 13-68 5-30-9-60 1-86 22-27 21-56 23-82-7Z" fill="#0f4d63"/>
-  <path d="M143 363c11-37 32-66 64-83l10-45 28 36c24 5 47 20 58 42 7 14-3 28-20 33-18 6-41 0-61 8-23 10-49 22-79 9Z" fill="#0f4d63"/>
-  <path d="M355 108h33v45h45v33h-45v45h-33v-45h-45v-33h45z" fill="#65b7a8"/>
-  <path d="M397 333c0-45 31-77 75-77s75 32 75 77" fill="none" stroke="#0f4d63" stroke-width="18" stroke-linecap="round" transform="translate(-72 11)"/>
-  <path d="M325 346v36m150-36v36" fill="none" stroke="#0f4d63" stroke-width="18" stroke-linecap="round"/>
-  <circle cx="325" cy="392" r="13" fill="#0f4d63"/>
-  <circle cx="475" cy="392" r="13" fill="#0f4d63"/>
+  <desc id="desc">Dog and cat silhouettes inside a stethoscope circle with a medical cross.</desc>
+  <path d="M395 104C353 55 286 32 220 43 121 60 50 143 50 242c0 68 34 128 86 164" fill="none" stroke="#0f4d63" stroke-width="19" stroke-linecap="round"/>
+  <path d="M135 384c4-74 31-129 82-173 16-14 33-32 50-59 7-12 23-8 23 6 0 31 3 51 14 65 24 9 49 22 70 43 14 14 13 32-4 42-23 14-59 5-93-15-31-18-63-16-88 9-19 19-31 48-37 91z" fill="#0f4d63"/>
+  <path d="M164 397c8-41 31-73 67-92l12-47 31 39c30 6 56 24 69 49 8 16-2 33-22 38-23 7-50-2-74 7-27 10-53 22-83 6z" fill="#0f4d63"/>
+  <path d="M345 132h34v46h46v34h-46v46h-34v-46h-46v-34h46z" fill="#65b7a8"/>
+  <path d="M394 104c20 45 18 99 0 146" fill="none" stroke="#0f4d63" stroke-width="19" stroke-linecap="round"/>
+  <circle cx="394" cy="250" r="16" fill="#0f4d63"/>
+  <path d="M398 284c23-24 63-24 86 0 17 18 21 45 16 78" fill="none" stroke="#0f4d63" stroke-width="18" stroke-linecap="round"/>
+  <path d="M394 284c-23-24-63-24-86 0-17 18-21 45-16 78" fill="none" stroke="#0f4d63" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="292" cy="374" r="12" fill="#0f4d63"/>
+  <circle cx="500" cy="374" r="12" fill="#0f4d63"/>
 </svg>
 `;
 
@@ -53,6 +55,7 @@ let js = await readFile(jsPath, 'utf8');
 
 js = js.replaceAll('vet.practice', 'vetAltas');
 js = js.replaceAll('/assets/vetaltas-logo.svg', logoPath);
+js = js.replaceAll('/assets/vetaltas-logo-v2.svg', logoPath);
 
 const logoMarker =
   'u.createElement("div",{className:"flex h-10 w-10 items-center justify-center rounded-lg bg-teal-700 text-white"},u.createElement(Ut.Stethoscope,{className:"h-5 w-5"}))';
@@ -68,6 +71,7 @@ const htmlPath = 'dist/index.html';
 let html = await readFile(htmlPath, 'utf8');
 html = html.replace(/<title>.*?<\/title>/, '<title>vetAltas</title>');
 html = html.replaceAll('/assets/vetaltas-logo.svg', logoPath);
+html = html.replaceAll('/assets/vetaltas-logo-v2.svg', logoPath);
 if (!html.includes(logoPath)) {
   html = html.replace(
     '</title>',
@@ -76,4 +80,4 @@ if (!html.includes(logoPath)) {
 }
 await writeFile(htmlPath, html);
 
-console.log('Applied vetAltas branding with updated logo assets.');
+console.log('Applied vetAltas branding with v3 logo assets.');
