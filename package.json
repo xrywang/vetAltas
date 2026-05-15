@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "build": "node build-branding.mjs"
+    "build": "node build-domainfix.mjs"
   }
 }
