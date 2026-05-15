@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "build": "node build-labfix.mjs"
+    "build": "node build-answerguard.mjs"
   }
 }
