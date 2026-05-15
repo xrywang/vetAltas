@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "build": "node build-original.mjs"
+    "build": "node build-cache-safe.mjs"
   }
 }
