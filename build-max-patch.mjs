@@ -4,6 +4,7 @@ import { gunzipSync } from 'node:zlib';
 
 const SOURCE_ORIGIN = 'https://vetaltas.com';
 const DIST = 'dist';
+const LOGO_PATH = '/assets/vetaltas-logo-v4.svg';
 
 async function read(url) {
   const res = await fetch(url, { headers: { 'user-agent': 'vetaltas-build' } });
@@ -120,7 +121,11 @@ function patchLabIndicators(js) {
 }
 
 function patchBundle(js) {
-  return patchLabIndicators(patchCaseAnalysis(patchDiseaseLearning(js)));
+  return patchLabIndicators(patchCaseAnalysis(patchDiseaseLearning(js)))
+    .replaceAll('/public/logo.png', LOGO_PATH)
+    .replaceAll('/assets/vetaltas-logo.svg', LOGO_PATH)
+    .replaceAll('/assets/vetaltas-logo-v2.svg', LOGO_PATH)
+    .replaceAll('/assets/vetaltas-logo-v3.svg', LOGO_PATH);
 }
 
 let html = await read(`${SOURCE_ORIGIN}/`);
@@ -129,6 +134,26 @@ const assetPaths = [...html.matchAll(/(?:src|href)="(\/(?!\/)[^"#?]+)(?:[?#][^"]
   .filter((path) => !path.endsWith('/'))
   .filter((path, index, paths) => paths.indexOf(path) === index);
 if (!assetPaths.some((p) => p.endsWith('.js'))) throw new Error('No JS asset found in source page');
+
+let logoSvg;
+try {
+  logoSvg = await read(`${SOURCE_ORIGIN}${LOGO_PATH}`);
+} catch {
+  logoSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="vetAltas logo">
+  <rect width="512" height="512" rx="96" fill="#f8fafc"/>
+  <circle cx="256" cy="256" r="176" fill="none" stroke="#0f766e" stroke-width="34"/>
+  <path d="M164 282c0-66 42-116 92-116s92 50 92 116" fill="none" stroke="#0f172a" stroke-width="34" stroke-linecap="round"/>
+  <path d="M190 330h132" stroke="#0f172a" stroke-width="34" stroke-linecap="round"/>
+  <path d="M256 108v88M212 152h88" stroke="#14b8a6" stroke-width="36" stroke-linecap="round"/>
+</svg>
+`;
+}
+await writeDist(LOGO_PATH, logoSvg);
+html = html
+  .replaceAll('/public/logo.png', LOGO_PATH)
+  .replaceAll('/assets/vetaltas-logo.svg', LOGO_PATH)
+  .replaceAll('/assets/vetaltas-logo-v2.svg', LOGO_PATH)
+  .replaceAll('/assets/vetaltas-logo-v3.svg', LOGO_PATH);
 
 for (const path of assetPaths) {
   let content = await read(`${SOURCE_ORIGIN}${path}`);
