@@ -1,1 +1,1 @@
-await import('./build-max-patch.mjs');
+await import('./build-stats-patch.mjs');
